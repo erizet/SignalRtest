@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SignalR.Hosting.Self;
-using SignalR;
-using SignalR.Hosting;
 using Common;
+using Microsoft.Owin.Hosting;
+using Microsoft.AspNet.SignalR;
+using Owin;
 
 namespace SignalRtest
 {
@@ -18,40 +18,49 @@ namespace SignalRtest
             Debug.Listeners.Add(new ConsoleTraceListener());
             Debug.AutoFlush = true;
 
+            //string url = "http://localhost:8080";
             string url = "http://*:8081/";
-            var server = new Server(url);
-
-            server.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(10);
-            // Map connections
-            var mc = server.MapConnection<MyConnection>("/echo");
-            //server.MapConnection<Raw>("/raw");
-            //server.MapHubs();
-
-            server.Start();
-            GC.KeepAlive(server);
-
-            Log.WriteLine("Server running on " +  url);
-
-            while (true)
+            
+            using (var wa = WebApplication.Start<Startup>(url))
             {
-                switch (Console.ReadKey().Key)
+                Console.WriteLine("Server running on {0}", url);
+
+                while (true)
                 {
-                    case ConsoleKey.D:
-                        server.Stop();
-                        break;
-                    case ConsoleKey.S:
-                        var context = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
-                        context.Connection.Broadcast(string.Format("This message is from the server message, sendtime: {0}", DateTime.Now));
-                        break;
-                    case ConsoleKey.U:
-                        server.Start();
-                        break;
-                    case ConsoleKey.Q:
-                        return;
-                    default:
-                        Log.WriteLine("Unknown command");
-                        break;
+                    switch (Console.ReadKey().Key)
+                    {
+                        case ConsoleKey.D:
+                            //server.Stop();
+                            break;
+                        case ConsoleKey.S:
+                            var context = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
+                            context.Connection.Broadcast(string.Format("This message is from the server message, sendtime: {0}", DateTime.Now));
+                            break;
+                        case ConsoleKey.U:
+                            //server.Start();
+                            break;
+                        case ConsoleKey.Q:
+                            return;
+                        default:
+                            Log.WriteLine("Unknown command");
+                            break;
+                    }
                 }
+
+            }
+
+
+
+            //server.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(10);
+
+
+        }
+
+        class Startup
+        {
+            public void Configuration(IAppBuilder app)
+            {
+                app.MapConnection<MyConnection>("/echo");
             }
         }
 
@@ -63,23 +72,29 @@ namespace SignalRtest
                 return base.OnConnectedAsync(request, connectionId);
             }
 
+            public override Task ProcessRequestAsync(HostContext context)
+            {
+                return base.ProcessRequestAsync(context);
+            }
+
             protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
             {
                 Log.WriteLine("From " + connectionId + ": " + data);
                 return Connection.Broadcast(data);
             }
 
-            protected override Task OnReconnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId)
+            protected override Task OnReconnectedAsync(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " reconnected");
-                return base.OnReconnectedAsync(request, groups, connectionId);
+                return base.OnReconnectedAsync(request, connectionId);
             }
 
-            protected override Task OnDisconnectAsync(string connectionId)
+            protected override Task OnDisconnectAsync(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " left");
-                return base.OnDisconnectAsync(connectionId);
+                return base.OnDisconnectAsync(request, connectionId);
             }
+
         }
     }
 }

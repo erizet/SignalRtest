@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SignalR.Client.Transports;
 using Common;
+using Microsoft.AspNet;
+using Microsoft.AspNet.SignalR.Client.Transports;
 
 namespace client
 {
@@ -13,7 +14,7 @@ namespace client
         static void Main(string[] args)
         {
 
-            SignalR.Client.Connection conn = new SignalR.Client.Connection("http://127.0.0.1:8081/echo");
+            Microsoft.AspNet.SignalR.Client.Connection conn = new Microsoft.AspNet.SignalR.Client.Connection("http://127.0.0.1:8081/echo");
             conn.Received += data =>
             {
                 Log.WriteLine(data);
