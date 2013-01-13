@@ -13,7 +13,7 @@ namespace client
         static void Main(string[] args)
         {
 
-            SignalR.Client.Connection conn = new SignalR.Client.Connection("http://borutv584:8081/echo");
+            SignalR.Client.Connection conn = new SignalR.Client.Connection("http://127.0.0.1:8081/echo");
             conn.Received += data =>
             {
                 Log.WriteLine(data);

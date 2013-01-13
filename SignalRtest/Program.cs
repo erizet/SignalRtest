@@ -18,7 +18,7 @@ namespace SignalRtest
             Debug.Listeners.Add(new ConsoleTraceListener());
             Debug.AutoFlush = true;
 
-            string url = "http://borutv584:8081/";
+            string url = "http://*:8081/";
             var server = new Server(url);
 
             server.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(10);
@@ -67,6 +67,12 @@ namespace SignalRtest
             {
                 Log.WriteLine("From " + connectionId + ": " + data);
                 return Connection.Broadcast(data);
+            }
+
+            protected override Task OnReconnectedAsync(IRequest request, IEnumerable<string> groups, string connectionId)
+            {
+                Log.WriteLine(connectionId + " reconnected");
+                return base.OnReconnectedAsync(request, groups, connectionId);
             }
 
             protected override Task OnDisconnectAsync(string connectionId)
