@@ -14,7 +14,7 @@ namespace client
         static void Main(string[] args)
         {
 
-            Microsoft.AspNet.SignalR.Client.Connection conn = new Microsoft.AspNet.SignalR.Client.Connection("http://127.0.0.1:8081/echo");
+            Microsoft.AspNet.SignalR.Client.Connection conn = new Microsoft.AspNet.SignalR.Client.Connection("http://ipv4.fiddler:8081/echo");
             conn.Received += data =>
             {
                 Log.WriteLine(data);

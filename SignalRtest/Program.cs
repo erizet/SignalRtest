@@ -8,6 +8,7 @@ using Common;
 using Microsoft.Owin.Hosting;
 using Microsoft.AspNet.SignalR;
 using Owin;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace SignalRtest
 {
@@ -15,45 +16,62 @@ namespace SignalRtest
     {
         static void Main(string[] args)
         {
-            Debug.Listeners.Add(new ConsoleTraceListener());
-            Debug.AutoFlush = true;
-
-            //string url = "http://localhost:8080";
             string url = "http://*:8081/";
-            
-            using (var wa = WebApplication.Start<Startup>(url))
-            {
-                Console.WriteLine("Server running on {0}", url);
 
-                while (true)
+            // Start hub
+            IDisposable wa = WebApplication.Start<Startup>(url);
+            try
+            {
+
+
+                Debug.Listeners.Add(new ConsoleTraceListener());
+                Debug.AutoFlush = true;
+
+                //string url = "http://localhost:8080";
+
                 {
-                    switch (Console.ReadKey().Key)
+                    Console.WriteLine("Server running on {0}", url);
+
+                    while (true)
                     {
-                        case ConsoleKey.D:
-                            //server.Stop();
-                            break;
-                        case ConsoleKey.S:
-                            var context = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
-                            context.Connection.Broadcast(string.Format("This message is from the server message, sendtime: {0}", DateTime.Now));
-                            break;
-                        case ConsoleKey.U:
-                            //server.Start();
-                            break;
-                        case ConsoleKey.Q:
-                            return;
-                        default:
-                            Log.WriteLine("Unknown command");
-                            break;
+                        switch (Console.ReadKey().Key)
+                        {
+                            case ConsoleKey.A:
+                                //server.Stop();
+                                break;
+                            case ConsoleKey.R:
+                                //server.Stop();
+                                break;
+                            case ConsoleKey.D:
+                                wa.Dispose();
+                                wa=null;
+                                break;
+                            case ConsoleKey.S:
+                                var context = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
+                                context.Connection.Broadcast(string.Format("This message is from the server message, sendtime: {0}", DateTime.Now));
+                                break;
+                            case ConsoleKey.U:
+                                if (wa == null)
+                                    wa = WebApplication.Start<Startup>(url);
+                                break;
+                            case ConsoleKey.Q:
+                                return;
+                            default:
+                                Log.WriteLine("Unknown command");
+                                break;
+                        }
                     }
+
                 }
 
             }
+            finally
+            {
+                wa.Dispose();
 
+                //server.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(10);
 
-
-            //server.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(10);
-
-
+            }
         }
 
         class Startup
@@ -61,6 +79,7 @@ namespace SignalRtest
             public void Configuration(IAppBuilder app)
             {
                 app.MapConnection<MyConnection>("/echo");
+                app.MapHubs();
             }
         }
 
@@ -69,7 +88,7 @@ namespace SignalRtest
             protected override Task OnConnectedAsync(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " connected");
-                return base.OnConnectedAsync(request, connectionId);
+                return Groups.Add(connectionId, "foo");
             }
 
             public override Task ProcessRequestAsync(HostContext context)
@@ -92,9 +111,42 @@ namespace SignalRtest
             protected override Task OnDisconnectAsync(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " left");
-                return base.OnDisconnectAsync(request, connectionId);
+                return Groups.Remove(connectionId, "foo");
+            }
+
+            protected override IEnumerable<string> OnRejoiningGroups(IRequest request, IEnumerable<string> groups, string connectionId)
+            {
+                return groups;
+            }
+        }
+
+
+        public class Chat : Hub
+        {
+            public void Send(string message)
+            {
+                // Call the addMessage method on all clients            
+                Clients.All.addMessage(message);
+            }
+
+            public override Task OnConnected()
+            {
+                return Clients.All.joined(Context.ConnectionId, DateTime.Now.ToString());
+            }
+
+            public override Task OnDisconnected()
+            {
+                return Clients.All.leave(Context.ConnectionId, DateTime.Now.ToString());
+            }
+
+            public override Task OnReconnected()
+            {
+                return Clients.All.rejoined(Context.ConnectionId, DateTime.Now.ToString());
             }
 
         }
+
+
+
     }
 }
