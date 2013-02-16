@@ -19,7 +19,7 @@ namespace SignalRtest
             Debug.AutoFlush = true;
 
             //string url = "http://localhost:8080";
-            string url = "http://*:8081/";
+            string url = "http://*:8082/";
             
             using (var wa = WebApplication.Start<Startup>(url))
             {
