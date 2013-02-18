@@ -66,33 +66,33 @@ namespace SignalRtest
 
         public class MyConnection : PersistentConnection
         {
-            protected override Task OnConnectedAsync(IRequest request, string connectionId)
+            protected override Task OnConnected(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " connected");
-                return base.OnConnectedAsync(request, connectionId);
+                return base.OnConnected(request, connectionId);
             }
 
-            public override Task ProcessRequestAsync(HostContext context)
+            public override Task ProcessRequest(Microsoft.AspNet.SignalR.Hosting.HostContext context)
             {
-                return base.ProcessRequestAsync(context);
+                return base.ProcessRequest(context);
             }
 
-            protected override Task OnReceivedAsync(IRequest request, string connectionId, string data)
+            protected override Task OnReceived(IRequest request, string connectionId, string data)
             {
                 Log.WriteLine("From " + connectionId + ": " + data);
                 return Connection.Broadcast(data);
             }
 
-            protected override Task OnReconnectedAsync(IRequest request, string connectionId)
+            protected override Task OnReconnected(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " reconnected");
-                return base.OnReconnectedAsync(request, connectionId);
+                return base.OnReconnected(request, connectionId);
             }
 
-            protected override Task OnDisconnectAsync(IRequest request, string connectionId)
+            protected override Task OnDisconnected(IRequest request, string connectionId)
             {
                 Log.WriteLine(connectionId + " left");
-                return base.OnDisconnectAsync(request, connectionId);
+                return base.OnDisconnected(request, connectionId);
             }
 
         }

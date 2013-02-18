@@ -17,31 +17,15 @@ namespace client
         /// <param name="url">The url to send the request to.</param>
         /// <param name="prepareRequest">A callback that initializes the request with default values.</param>
         /// <returns>A <see cref="Task{IResponse}"/>.</returns>
-        public Task<IResponse> GetAsync(string url, Action<IRequest> prepareRequest)
+        public Task<IResponse> Get(string url, Action<IRequest> prepareRequest)
         {
             Log.WriteLine("GET url: " + url);
-            return dhc.GetAsync(url, prepareRequest);
-        }
-
-        /// <summary>
-        /// Makes an asynchronous http POST request to the specified url.
-        /// </summary>
-        /// <param name="url">The url to send the request to.</param>
-        /// <param name="prepareRequest">A callback that initializes the request with default values.</param>
-        /// <param name="postData">form url encoded data.</param>
-        /// <returns>A <see cref="Task{IResponse}"/>.</returns>
-        public Task<IResponse> PostAsync(string url, Action<IRequest> prepareRequest, Dictionary<string, string> postData)
-        {
-            Log.WriteLine("POST url: " + url);
-            Log.WriteLine("POST-data: " + PostData2String(postData));
-
-            Task<IResponse> t = dhc.PostAsync(url, prepareRequest, postData);
-            t.ContinueWith(tr => { Log.WriteLine("Response: " + tr.Result.ReadAsString()); }, TaskContinuationOptions.OnlyOnRanToCompletion);
-            return t;
+            return dhc.Get(url, prepareRequest);
         }
 
 
-        private string PostData2String(Dictionary<string, string> postData)
+
+        private string PostData2String(IDictionary<string, string> postData)
         {
             StringBuilder sb = new StringBuilder();
             if (postData != null)
@@ -55,6 +39,24 @@ namespace client
                 }
             }
             return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// Makes an asynchronous http POST request to the specified url.
+        /// </summary>
+        /// <param name="url">The url to send the request to.</param>
+        /// <param name="prepareRequest">A callback that initializes the request with default values.</param>
+        /// <param name="postData">form url encoded data.</param>
+        /// <returns>A <see cref="Task{IResponse}"/>.</returns>
+        public Task<IResponse> Post(string url, Action<IRequest> prepareRequest, IDictionary<string, string> postData)
+        {
+            Log.WriteLine("POST url: " + url);
+            Log.WriteLine("POST-data: " + PostData2String(postData));
+
+            Task<IResponse> t = dhc.Post(url, prepareRequest, postData);
+            t.ContinueWith(tr => { Log.WriteLine("Response: " + tr.Result.ReadAsString()); }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            return t;
         }
     }
 }
