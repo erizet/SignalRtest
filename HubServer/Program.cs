@@ -39,4 +39,24 @@ namespace HubServer
             Clients.All.addMessage(message);
         }
     }
+
+    public class Calculator : Hub
+    {
+        public int Add(int a, int b)
+        {
+            return a + b;
+        }
+        public int Sub(int a, int b)
+        {
+            return a - b;
+        }
+        public string GetName()
+        {
+            return "Erik";
+        }
+        public string Mix(int i, string s)
+        {
+            return s + i.ToString();
+        }
+    }
 }

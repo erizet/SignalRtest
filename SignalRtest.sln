@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRtest", "SignalRtest\SignalRtest.csproj", "{DF9D031D-BCDE-4430-96A7-FB51D66AFD62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "client\client.csproj", "{85E267AF-423C-4441-A7F6-2CDDB25A86C5}"
@@ -17,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubServer", "HubServer\HubServer.csproj", "{5D706EC7-26D1-4DF2-ADA6-D8C04388ED94}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubClient", "HubClient\HubClient.csproj", "{D5E4675F-7F0B-4315-A0B2-1244E2BAC280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorClient", "CalculatorClient\CalculatorClient.csproj", "{6B2945E6-2048-4296-A59A-4FB9355F2209}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,16 @@ Global
 		{D5E4675F-7F0B-4315-A0B2-1244E2BAC280}.Release|Mixed Platforms.Build.0 = Release|x86
 		{D5E4675F-7F0B-4315-A0B2-1244E2BAC280}.Release|x86.ActiveCfg = Release|x86
 		{D5E4675F-7F0B-4315-A0B2-1244E2BAC280}.Release|x86.Build.0 = Release|x86
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
