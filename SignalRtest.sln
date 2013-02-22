@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubClient", "HubClient\HubC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorClient", "CalculatorClient\CalculatorClient.csproj", "{6B2945E6-2048-4296-A59A-4FB9355F2209}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroupClient", "GroupClient\GroupClient.csproj", "{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,16 @@ Global
 		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6B2945E6-2048-4296-A59A-4FB9355F2209}.Release|x86.ActiveCfg = Release|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D58E20FC-4DA6-4ABC-A0B6-75E4FED8CDAD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

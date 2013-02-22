@@ -36,6 +36,10 @@ namespace SignalRtest
                             var context = GlobalHost.ConnectionManager.GetConnectionContext<MyConnection>();
                             context.Connection.Broadcast(string.Format("This message is from the server message, sendtime: {0}", DateTime.Now));
                             break;
+                        case ConsoleKey.G:
+                            var groupContext = GlobalHost.ConnectionManager.GetConnectionContext<GroupConnection>();
+                            groupContext.Groups.Send("foo", "this is for the foo-group");
+                            break;
                         case ConsoleKey.U:
                             //server.Start();
                             break;
@@ -61,6 +65,7 @@ namespace SignalRtest
             public void Configuration(IAppBuilder app)
             {
                 app.MapConnection<MyConnection>("/echo");
+                app.MapConnection<GroupConnection>("/group");
             }
         }
 
@@ -95,6 +100,36 @@ namespace SignalRtest
                 return base.OnDisconnected(request, connectionId);
             }
 
+        }
+
+        public class GroupConnection : PersistentConnection
+        {
+            protected override Task OnConnected(IRequest request, string connectionId)
+            {
+                return Groups.Add(connectionId, "foo");
+            }
+
+            protected override Task OnReceived(IRequest request, string connectionId, string data)
+            {
+                // Messages are sent with the following format
+                // group:message
+                string[] decoded = data.Split(':');
+                string groupName = decoded[0];
+                string message = decoded[1];
+
+                // Send a message to the specified
+                return Groups.Send(groupName, message);
+            }
+
+            protected override Task OnDisconnected(IRequest request, string connectionId)
+            {
+                return Groups.Remove(connectionId, "foo");
+            }
+
+            protected override IList<string> OnRejoiningGroups(IRequest request, IList<string> groups, string connectionId)
+            {
+                return groups;
+            }
         }
     }
 }
