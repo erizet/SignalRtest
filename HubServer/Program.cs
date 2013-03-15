@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Owin.Hosting;
 using Owin;
 using Microsoft.AspNet.SignalR;
+using System.Threading;
 
 namespace HubServer
 {
@@ -38,6 +39,19 @@ namespace HubServer
             // Call the addMessage method on all clients            
             Clients.All.addMessage(message);
         }
+
+        public string Send2(string message)
+        {
+            Thread.Sleep(5000);
+            return message;
+        }
+
+        public object Send3(string message)
+        {
+
+            return new { Name = message, Age = 10 };
+        }
+
     }
 
     public class Calculator : Hub

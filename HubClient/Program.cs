@@ -32,7 +32,14 @@ namespace HubClient
             while ((line = Console.ReadLine()) != null)
             {
                 // Send a message to the server
-                chat.Invoke("Send", line).Wait();
+                chat.Invoke("Send3", line).ContinueWith(t =>
+                {
+                    Console.WriteLine("Invoke finished");
+                });
+                //chat.Invoke<string>("Send2", line).ContinueWith(t =>
+                //{
+                //    Console.WriteLine("Return value: " + t.Result);
+                //});
             }
         }
     }
